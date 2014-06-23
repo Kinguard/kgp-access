@@ -1,0 +1,5 @@
+opi-access.conf /etc/opi/
+opi-access /etc/cron.d
+opi-access.sh /usr/share/opi-access
+
+

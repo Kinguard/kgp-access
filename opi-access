@@ -1,0 +1,4 @@
+# /etc/cron.d/opi-access: crontab fragment for opi-access
+#  This triggers the OPI UPNP script to try to open and redirect ports in the firewall
+
+*/10 * * * *     root   [ -x /usr/share/opi-access/opi-access.sh ] /usr/share/opi-access/opi-access.sh > /dev/null 2>&1

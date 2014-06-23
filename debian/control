@@ -1,0 +1,13 @@
+Source: opi-access
+Section: devel
+Priority: optional
+Maintainer: PA Nilsson <pa@openproducts.se>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+
+Package: opi-access
+Architecture: all
+Depends: miniupnpc
+Conflicts: 
+Description: OPI access
+ Sets up OPI port forwards and DynDNS services.
