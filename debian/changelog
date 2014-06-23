@@ -1,3 +1,9 @@
+opi-access (1.0.1) testing; urgency=low
+
+  * Changed delimiter in sed commands from '/' to '|'
+
+ -- PA Nilsson <pa@openproducts.se>  Mon, 23 Jun 2014 12:11:37 +0200
+
 opi-access (1.0) testing; urgency=low
 
   * Initial Files.

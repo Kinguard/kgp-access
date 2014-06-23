@@ -26,13 +26,13 @@ case "$1" in
 	grep $script /etc/rc.local
 	if [ $? -eq 1 ]; then
 		# add to run at boot
-		sed -i 's/^exit 0$/${script}  &> /dev/null/' /etc/rc.local
+		sed -i 's|^exit 0$|'${script}'\nexit 0\n|' /etc/rc.local
 	fi
 
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-	sed -i '/^${script}.*$/d' /etc/rc.local
+	sed -i '|^'${script}'.*$|d' /etc/rc.local
     ;;
 
     *)
