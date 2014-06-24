@@ -2,3 +2,4 @@
 #  This triggers the OPI UPNP script to try to open and redirect ports in the firewall
 
 */10 * * * *     root   [ -x /usr/share/opi-access/opi-access.sh ] /usr/share/opi-access/opi-access.sh > /dev/null 2>&1
+*/10 * * * *     root   [ -x /usr/share/opi-access/dns_update.py ] /usr/share/opi-access/dns_update.py > /dev/null 2>&1
