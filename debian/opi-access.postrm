@@ -22,8 +22,11 @@ set -e
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
-	script="/usr/share/opi-access/opi-access.sh"
-	sed -i '|^$'{script}'.*$|d' /etc/rc.local
+	portmapper="/usr/share/opi-access/opi-access.sh"
+	sed -i '|^$'{portmapper}'.*$|d' /etc/rc.local
+
+	dyndns="/usr/share/opi-access/dns_update.py"
+	sed -i '|^$'{dyndns}'.*$|d' /etc/rc.local
 
     ;;
 

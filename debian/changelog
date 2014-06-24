@@ -1,3 +1,9 @@
+opi-access (1.0.2) testing; urgency=low
+
+  * Added dns updater
+
+ -- PA Nilsson <pa@openproducts.se>  Tue, 24 Jun 2014 09:45:27 +0200
+
 opi-access (1.0.1) testing; urgency=low
 
   * Changed delimiter in sed commands from '/' to '|'
