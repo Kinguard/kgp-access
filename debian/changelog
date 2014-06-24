@@ -1,3 +1,9 @@
+opi-access (1.0.3) testing; urgency=low
+
+  * Fixed postrm script
+
+ -- PA Nilsson <pa@openproducts.se>  Tue, 24 Jun 2014 10:14:09 +0200
+
 opi-access (1.0.2) testing; urgency=low
 
   * Added dns updater
