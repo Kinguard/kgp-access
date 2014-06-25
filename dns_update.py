@@ -192,10 +192,10 @@ if __name__=='__main__':
 			print("Missing parameters in accessinfo")
 			sys.exit(1)
 		accessinfo = accessconf['accessinfo']
-		if 'dns-key' not in accessinfo:
+		if 'dnskey' not in accessinfo:
 			print("Missing parameters in accessinfo")
 			sys.exit(1)
-		fp_pkey = accessinfo['dns-key'].strip('"')
+		fp_pkey = accessinfo['dnskey'].strip('"')
 		if 'dyndns' not in accessinfo:
 			print("Missing dyndns parameters in accessinfo")
 			sys.exit(1)
