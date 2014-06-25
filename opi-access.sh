@@ -1,6 +1,5 @@
 #!/bin/bash
 source /etc/opi/opi-access.conf
-date >> /tmp/opi-access.log
 
 ipaddr=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{ print $1}'`
 
