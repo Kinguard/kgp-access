@@ -1,0 +1,8 @@
+~*
+debian/opi-access/
+debian/files
+debian/*.log
+debian/*helper
+debian/*substvars
+.project
+.pydevproject

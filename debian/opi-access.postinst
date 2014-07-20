@@ -29,12 +29,12 @@ case "$1" in
 	chmod 740 ${portmapper}	
 	chmod 740 ${dyndns}	
 
-	grep $portmapper /etc/rc.local
+	grep $portmapper /etc/rc.local || true  # needed since this fails if it is not there and we are using '-e'
 	if [ $? -eq 1 ]; then
 		# add to run at boot
 		sed -i 's|^exit 0$|'${portmapper}'\nexit 0\n|' /etc/rc.local
 	fi
-	grep $dyndns /etc/rc.local
+	grep $dyndns /etc/rc.local || true  # needed since this fails if it is not there and we are using '-e'
 	if [ $? -eq 1 ]; then
 		# add to run at boot
 		sed -i 's|^exit 0$|'${dyndns}'\nexit 0\n|' /etc/rc.local
