@@ -20,6 +20,11 @@ set -e
 
 case "$1" in
     configure)
+	
+	if [ ! -e /etc/opi/opi-access.conf ]
+	then
+		cp /usr/share/opi-access/opi-access.conf /etc/opi
+	fi
 
 	# add startup script to rc.local so that it is always run on boot
 	portmapper="/usr/share/opi-access/opi-access.sh"
@@ -27,19 +32,20 @@ case "$1" in
 	
 	#fix permissions
 	chmod 740 ${portmapper}	
-	chmod 740 ${dyndns}	
+	chmod 740 ${dyndns}
 
-	grep $portmapper /etc/rc.local || true  # needed since this fails if it is not there and we are using '-e'
+	set +e
+	grep $portmapper /etc/rc.local 
 	if [ $? -eq 1 ]; then
 		# add to run at boot
 		sed -i 's|^exit 0$|'${portmapper}'\nexit 0\n|' /etc/rc.local
 	fi
-	grep $dyndns /etc/rc.local || true  # needed since this fails if it is not there and we are using '-e'
+	grep $dyndns /etc/rc.local 
 	if [ $? -eq 1 ]; then
 		# add to run at boot
 		sed -i 's|^exit 0$|'${dyndns}'\nexit 0\n|' /etc/rc.local
 	fi
-
+	set -e
 
     ;;
 

@@ -163,13 +163,17 @@ if __name__=='__main__':
 			sys.exit(1)
 		sysinfo = sysconf['sysinfo']
 		if 'unit_id' not in sysinfo:
-			print("Missing parameters in sysinfo")
+			print("Missing unit_id in sysinfo")
 			sys.exit(1)
 		unit_id = sysinfo['unit_id'].strip('"')
 		if 'capath' not in sysinfo:
-			print("Missing parameters in sysinfo")
+			print("Missing capath in sysinfo")
 			sys.exit(1)
 		cafile = sysinfo['capath'].strip('"')
+		if 'dns_key' not in sysinfo:
+			print("Missing dns_key in sysinfo")
+			sys.exit(1)
+		fp_pkey = sysinfo['dns_key'].strip('"')
 
 	except Exception as e:
 		print("Error parsing sysconfig")
@@ -192,10 +196,6 @@ if __name__=='__main__':
 			print("Missing parameters in accessinfo")
 			sys.exit(1)
 		accessinfo = accessconf['accessinfo']
-		if 'dnskey' not in accessinfo:
-			print("Missing parameters in accessinfo")
-			sys.exit(1)
-		fp_pkey = accessinfo['dnskey'].strip('"')
 		if 'dyndns' not in accessinfo:
 			print("Missing dyndns parameters in accessinfo")
 			sys.exit(1)

@@ -4,7 +4,6 @@
 # see: dh_installdeb(1)
 
 set -e
-
 # summary of how this script can be called:
 #        * <postrm> `remove'
 #        * <postrm> `purge'
@@ -22,12 +21,12 @@ set -e
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
-	portmapper="opi-access.sh"
-	sed -i '/${portmapper}/d' /etc/rc.local
+	portmapper="^.*opi-access.sh.*$"
+	sed -i /${portmapper}/d /etc/rc.local
 
-	dyndns="dns_update.py"
-	sed -i '/${dyndns}/d' /etc/rc.local
-
+	dyndns="^.*dns_update.py.*$"
+	sed -i /${dyndns}/d /etc/rc.local
+	
     ;;
 
     *)
@@ -41,4 +40,4 @@ esac
 
 #DEBHELPER#
 
-exit 0
+exit 0 
