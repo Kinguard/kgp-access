@@ -1,3 +1,9 @@
+opi-access (1.0.12) testing; urgency=low
+
+  * Added support to update by serial
+
+ -- PA Nilsson <pa@openproducts.se>  Fri, 25 Jul 2014 09:43:26 +0200
+
 opi-access (1.0.11) testing; urgency=low
 
   * Making sure script exits with '0'
