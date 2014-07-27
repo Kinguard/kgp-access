@@ -214,10 +214,10 @@ if __name__=='__main__':
 			print("Missing parameters in sysinfo")
 			sys.exit(1)
 		sysinfo = sysconf['sysinfo']
-		if 'capath' not in sysinfo:
-			print("Missing capath in sysinfo")
+		if 'ca_path' not in sysinfo:
+			print("Missing ca_path in sysinfo")
 			sys.exit(1)
-		cafile = sysinfo['capath'].strip('"')
+		cafile = sysinfo['ca_path'].strip('"')
 		if 'unit_id' not in sysinfo:
 			# update dns by using serialnumber in flash
 			print("Missing unit_id in sysinfo, using serialnumber")
