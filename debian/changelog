@@ -1,3 +1,9 @@
+opi-access (1.0.14) testing; urgency=low
+
+  * Fixed indentation error
+
+ -- PA Nilsson <pa@openproducts.se>  Sun, 27 Jul 2014 18:07:47 +0200
+
 opi-access (1.0.13) testing; urgency=low
 
   * Changed capath -> ca_path

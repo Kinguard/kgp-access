@@ -228,7 +228,7 @@ if __name__=='__main__':
 				if 'dns_key' not in sysinfo:
 					print("Missing dns_key in sysinfo")
 					sys.exit(1)
-					fp_pkey = sysinfo['dns_key'].strip('"')
+				fp_pkey = sysinfo['dns_key'].strip('"')
 
 	except Exception as e:
 		print("Error parsing sysconfig")
