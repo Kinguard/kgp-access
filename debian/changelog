@@ -1,3 +1,9 @@
+opi-access (1.0.15) vili; urgency=low
+
+  * Sending local IP on update.
+
+ -- PA Nilsson <pa@openproducts.se>  Tue, 21 Oct 2014 19:38:05 +0200
+
 opi-access (1.0.14) testing; urgency=low
 
   * Fixed indentation error
