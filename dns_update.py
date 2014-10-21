@@ -6,6 +6,9 @@ import hashlib
 from OpenSSL import crypto
 import configparser
 import sys
+import socket
+import struct
+import fcntl
 
 AUTH_SERVER		= "auth.openproducts.com"
 AUTH_PATH		= "/"
@@ -14,6 +17,9 @@ DNS_FILE		= "update_dns.php"
 
 SYSINFO			= "/etc/opi/sysinfo.conf"
 ACCESSINFO		= "/etc/opi/opi-access.conf"
+
+#IOCTL for getting ifaddr of iface
+SIOCGIFADDR 		= 0x8915
 
 #TODO: more errorchecking
 
@@ -71,9 +77,22 @@ def sendsignedchallenge(conn, unit_id, fp_pkey, challenge):
 
 	return token
 
+def get_ip(iface = 'eth0'):
+	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	sockfd = sock.fileno()
+
+	ifreq = struct.pack('16sH14s', iface.encode('utf-8'), socket.AF_INET, b'\x00'*14)
+	try:
+		res = fcntl.ioctl(sockfd, SIOCGIFADDR, ifreq)
+	except:
+		return None
+	ip = struct.unpack('16sH2x4s8x', res)[2]
+	return socket.inet_ntoa(ip)
+
 def sendDNSupdate(conn, unit_id,token):
 	data = {}
 	data["unit_id"] = unit_id
+	data["local_ip"] = get_ip()
 
 	params = urllib.parse.urlencode( data, doseq=True )
 	headers = {"Content-type": "application/x-www-form-urlencoded","token":token}
@@ -162,6 +181,7 @@ def update_by_serial(conn):
 			#print(serial)
 			data = {}
 			data['fqdn'] = serial+"."+DOMAIN
+			data['local_ip'] = get_ip()
 			params = urllib.parse.urlencode( data, doseq=True )
 			headers = {"Content-type": "application/x-www-form-urlencoded"}
 			path = urllib.parse.quote(AUTH_PATH + DNS_FILE)
