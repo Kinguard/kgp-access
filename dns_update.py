@@ -250,40 +250,19 @@ if __name__=='__main__':
 					sys.exit(1)
 				fp_pkey = sysinfo['dns_key'].strip('"')
 
-	except Exception as e:
-		print("Error parsing sysconfig")
-		print(e)
+				if 'dnsenabled' not in sysinfo:
+					print("Missing dnsenabled parameter in sysinfo")
 		sys.exit(1)
 
-		if not dns_by_serial:
-			try:
-				fh_accessconf = open(ACCESSINFO, encoding="utf_8")
-			except Exception as e:
-				print("Error opening ACCESSINFO file: "+ACCESSINFO)
-				print(e)
-				sys.exit(1)
-
-			accessconf = configparser.ConfigParser()
-			# There are no sections in our ini files, so add one on the fly.
-			try:
-				accessconf.read_file(add_section_header(fh_accessconf, 'accessinfo'), source=ACCESSINFO)
-				if 'accessinfo' not in accessconf:
-					print("Missing parameters in accessinfo")
-					sys.exit(1)
-				accessinfo = accessconf['accessinfo']
-				if 'dyndns' not in accessinfo:
-					print("Missing dyndns parameters in accessinfo")
-					sys.exit(1)
-				if accessinfo['dyndns'].strip('"') != "yes":
+				if sysinfo['dnsenabled'].strip('"') != "1":
 					print("DynDNS service not enabled.")
 					sys.exit(0)
 			except Exception as e:
-				print("Error parsing access config")
+		print("Error parsing sysconfig")
 				print(e)
 				sys.exit(1)
 
 
-	#print(unit_id)
 
 	try:
 		import ssl
