@@ -244,23 +244,21 @@ if __name__=='__main__':
 			dns_by_serial = True
 		else:
 			unit_id = sysinfo['unit_id'].strip('"')
-			if not dns_by_serial:
-				if 'dns_key' not in sysinfo:
-					print("Missing dns_key in sysinfo")
-					sys.exit(1)
-				fp_pkey = sysinfo['dns_key'].strip('"')
+			if 'dns_key' not in sysinfo:
+				print("Missing dns_key in sysinfo")
+				sys.exit(1)
+			fp_pkey = sysinfo['dns_key'].strip('"')
 
-				if 'dnsenabled' not in sysinfo:
-					print("Missing dnsenabled parameter in sysinfo")
-		sys.exit(1)
-
+			if 'dnsenabled' not in sysinfo:
+				print("Missing dnsenabled parameter in sysinfo, correct default setting")
+			else:
 				if sysinfo['dnsenabled'].strip('"') != "1":
 					print("DynDNS service not enabled.")
 					sys.exit(0)
-			except Exception as e:
+	except Exception as e:
 		print("Error parsing sysconfig")
-				print(e)
-				sys.exit(1)
+		print(e)
+		sys.exit(1)
 
 
 
