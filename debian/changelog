@@ -1,3 +1,15 @@
+opi-access (1.1.1) vili; urgency=medium
+
+  * Fixed debugprints 
+
+ -- PA Nilsson <pa@openproducts.se>  Wed, 16 Nov 2016 09:23:42 +0100
+
+opi-access (1.1.0) vili; urgency=medium
+
+  * Added Let's Encrypt generation for serialnumber certificate 
+
+ -- PA Nilsson <pa@openproducts.se>  Fri, 11 Nov 2016 16:08:13 +0100
+
 opi-access (1.0.18) vili; urgency=low
 
   * Fixed issue with default config of dns updater

@@ -9,6 +9,7 @@ import sys
 import socket
 import struct
 import fcntl
+from subprocess import call
 
 AUTH_SERVER		= "auth.openproducts.com"
 AUTH_PATH		= "/"
@@ -17,6 +18,8 @@ DNS_FILE		= "update_dns.php"
 
 SYSINFO			= "/etc/opi/sysinfo.conf"
 ACCESSINFO		= "/etc/opi/opi-access.conf"
+
+CERTHANDLER		= "/usr/share/kinguard-certhandler/letsencrypt.sh"
 
 #IOCTL for getting ifaddr of iface
 SIOCGIFADDR 		= 0x8915
@@ -180,7 +183,8 @@ def update_by_serial(conn):
 			#print("Serial: ")
 			#print(serial)
 			data = {}
-			data['fqdn'] = serial+"."+DOMAIN
+			fqdn= serial+"."+DOMAIN
+			data['fqdn'] = fqdn
 			data['local_ip'] = get_ip()
 			params = urllib.parse.urlencode( data, doseq=True )
 			headers = {"Content-type": "application/x-www-form-urlencoded"}
@@ -198,7 +202,19 @@ def update_by_serial(conn):
 			rp = json.loads( data.decode('utf-8') )
 
 			if r.status == 200:
-				print("Got '200 OK'")
+				print("DNS record updated")
+				#print("Got '200 OK'")
+				try:
+					# generate a letsencrypt certificate using the serial number
+					certargs = " -cn -d "+fqdn
+					# print("Calling certhandler with ARGS:")
+					# print(certargs)
+					certstatus = call(CERTHANDLER + certargs, shell=True)
+					if certstatus:
+						print("Unable to create Let's Encrypt Certificate")						
+				except Exception as e:
+					print("Unable to create Let's Encrypt Certificate")
+					print(e)
 				return True
 			if r.status == 403:
 				print("Failed to update")
@@ -250,7 +266,7 @@ if __name__=='__main__':
 			fp_pkey = sysinfo['dns_key'].strip('"')
 
 			if 'dnsenabled' not in sysinfo:
-				print("Missing dnsenabled parameter in sysinfo, correct default setting")
+				print("Missing dnsenabled parameter in sysinfo, this is correct default setting")
 			else:
 				if sysinfo['dnsenabled'].strip('"') != "1":
 					print("DynDNS service not enabled.")
