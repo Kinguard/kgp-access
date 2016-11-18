@@ -206,7 +206,7 @@ def update_by_serial(conn):
 				#print("Got '200 OK'")
 				try:
 					# generate a letsencrypt certificate using the serial number
-					certargs = " -cn -d "+fqdn
+					certargs = " -ac -d "+fqdn
 					# print("Calling certhandler with ARGS:")
 					# print(certargs)
 					certstatus = call(CERTHANDLER + certargs, shell=True)
@@ -304,6 +304,18 @@ if __name__=='__main__':
 			if response[0] == 200:
 				token = response[1]
 				if sendDNSupdate(conn,unit_id,token):
+					try:
+						# generate a letsencrypt certificate using the serial number
+						certargs = " -ac"
+						print("Updating singed certificates")
+						# print(certargs)
+						certstatus = call(CERTHANDLER + certargs, shell=True)
+						if certstatus:
+							print("Unable to create Let's Encrypt Certificate")						
+					except Exception as e:
+						print("Unable to create Let's Encrypt Certificate")
+						print(e)
+
 					sys.exit(0)
 
 			sys.exit(1)

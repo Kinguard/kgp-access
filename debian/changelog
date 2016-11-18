@@ -1,3 +1,27 @@
+opi-access (1.2.3) vili; urgency=medium
+
+  * Acutally adding the changes to the file 
+
+ -- PA Nilsson <pa@openproducts.se>  Fri, 18 Nov 2016 15:49:06 +0100
+
+opi-access (1.2.2) vili; urgency=medium
+
+  * Cron job not triggering update of certificates 
+
+ -- PA Nilsson <pa@openproducts.se>  Fri, 18 Nov 2016 15:45:24 +0100
+
+opi-access (1.2.1) vili; urgency=medium
+
+  * Updates due to changes in certhandler 
+
+ -- PA Nilsson <pa@openproducts.se>  Fri, 18 Nov 2016 09:20:46 +0100
+
+opi-access (1.2.0) vili; urgency=medium
+
+  *  Added support to trigger update of signed certificates
+
+ -- PA Nilsson <pa@openproducts.se>  Thu, 17 Nov 2016 15:55:07 +0100
+
 opi-access (1.1.1) vili; urgency=medium
 
   * Fixed debugprints 

@@ -21,37 +21,19 @@ set -e
 case "$1" in
     configure)
 	
-	if [ ! -e /etc/opi/opi-access.conf ]
-	then
-		cp /usr/share/opi-access/opi-access.conf /etc/opi
-	fi
-
-	# add startup script to rc.local so that it is always run on boot
-	portmapper="/usr/share/opi-access/opi-access.sh"
-	dyndns="/usr/share/opi-access/dns_update.py"
-	
-	#fix permissions
-	chmod 740 ${portmapper}	
-	chmod 740 ${dyndns}
-
-	set +e
-	grep $portmapper /etc/rc.local 
-	if [ $? -eq 1 ]; then
-		# add to run at boot
-		sed -i 's|^exit 0$|'${portmapper}'\nexit 0\n|' /etc/rc.local
-	fi
-	grep $dyndns /etc/rc.local 
-	if [ $? -eq 1 ]; then
-		# add to run at boot
-		sed -i 's|^exit 0$|'${dyndns}'\nexit 0\n|' /etc/rc.local
-	fi
-	set -e
-
+		if [ ! -e /etc/opi/opi-access.conf ]; then
+			cp /usr/share/opi-access/opi-access.conf /etc/opi
+		fi
+		
+		# remove possible existing triggers from rc.local
+		sed -i '/opi-access.sh/d' /etc/rc.local
+		sed -i '/dns_update.py/d' /etc/rc.local
+		
+		update-rc.d opi-access-boot defaults
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-	sed -i '|^'${portmapper}'.*$|d' /etc/rc.local
-	sed -i '|^'${dyndns}'.*$|d' /etc/rc.local
+		update-rc.d -f opi-access-boot remove
     ;;
 
     *)
