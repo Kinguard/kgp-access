@@ -1,3 +1,9 @@
+opi-access (1.2.4) vili; urgency=medium
+
+  * Fixed minor typo in upstart script 
+
+ -- PA Nilsson <pa@openproducts.se>  Mon, 05 Dec 2016 15:16:28 +0100
+
 opi-access (1.2.3) vili; urgency=medium
 
   * Acutally adding the changes to the file 

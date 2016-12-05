@@ -21,6 +21,7 @@ do_start() {
 }
 
 do_stop() {
+	echo "Nothing to do for opi-access 'stop'"
 }
 
 case "$1" in
