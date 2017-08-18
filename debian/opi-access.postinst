@@ -26,8 +26,10 @@ case "$1" in
 		fi
 		
 		# remove possible existing triggers from rc.local
-		sed -i '/opi-access.sh/d' /etc/rc.local
-		sed -i '/dns_update.py/d' /etc/rc.local
+		if [ -e /etc/rc.local ]; then
+			sed -i '/opi-access.sh/d' /etc/rc.local
+			sed -i '/dns_update.py/d' /etc/rc.local
+		fi
 		
 		update-rc.d opi-access-boot defaults
     ;;

@@ -21,12 +21,13 @@ set -e
 case "$1" in
     purge|remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 
-	portmapper="^.*opi-access.sh.*$"
-	sed -i /${portmapper}/d /etc/rc.local
+	if [ -e /etc/rc.local ]; then
+		portmapper="^.*opi-access.sh.*$"
+		sed -i /${portmapper}/d /etc/rc.local
 
-	dyndns="^.*dns_update.py.*$"
-	sed -i /${dyndns}/d /etc/rc.local
-	
+		dyndns="^.*dns_update.py.*$"
+		sed -i /${dyndns}/d /etc/rc.local
+	fi	
     ;;
 
     *)

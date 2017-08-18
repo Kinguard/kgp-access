@@ -3,13 +3,15 @@ import urllib.parse
 import json
 from base64 import b64encode
 import hashlib
-from OpenSSL import crypto
 import configparser
 import sys
 import socket
 import struct
 import fcntl
 from subprocess import call
+from ctypes import *
+from os import path
+from pylibopi import SerialNumber
 
 AUTH_SERVER		= "auth.openproducts.com"
 AUTH_PATH		= "/"
@@ -167,114 +169,104 @@ def add_section_header(properties_file, header_name):
 		yield line
 
 def update_by_serial(conn):
-	import re
-	eeprom = "/sys/bus/i2c/devices/0-0050/eeprom"
+	serial = SerialNumber().decode("utf-8")
 	try:
-		ee = open(eeprom,'rb')
-		serial = ee.read(16)[4:11].decode(encoding='UTF-8') # read first not interesting bytes
-		'''
+		if (serial == "Undefined"):
+			print("Undefined serial number thus unable to update anything, exiting")
+			sys.exit(1)
 		print("Serial: ")
 		print(serial)
-		if 'A335' in serial:
-			print("A335 found")
-		'''
-		try:
-			serial = ee.read(12).decode(encoding='UTF-8')
-			#print("Serial: ")
-			#print(serial)
-			data = {}
-			fqdn= serial+"."+DOMAIN
-			data['fqdn'] = fqdn
-			data['local_ip'] = get_ip()
-			params = urllib.parse.urlencode( data, doseq=True )
-			headers = {"Content-type": "application/x-www-form-urlencoded"}
-			path = urllib.parse.quote(AUTH_PATH + DNS_FILE)
+		data = {}
+		fqdn= serial+"."+DOMAIN
+		data['fqdn'] = fqdn
+		data['local_ip'] = get_ip()
+		params = urllib.parse.urlencode( data, doseq=True )
+		headers = {"Content-type": "application/x-www-form-urlencoded"}
+		path = urllib.parse.quote(AUTH_PATH + DNS_FILE)
 
-			conn.request("POST", path, params, headers)
+		conn.request("POST", path, params, headers)
 
-			r = conn.getresponse()
-			data = r.read()
+		r = conn.getresponse()
+		data = r.read()
 
-			if r.status not in ( 200, 403):
-				print("Wrong status %d"%r.status)
-				return False
+		if r.status not in ( 200, 403):
+			print("Wrong status %d"%r.status)
+			return False
 
-			rp = json.loads( data.decode('utf-8') )
+		rp = json.loads( data.decode('utf-8') )
 
-			if r.status == 200:
-				print("DNS record updated")
-				#print("Got '200 OK'")
-				try:
-					# generate a letsencrypt certificate using the serial number
-					certargs = " -ac -d "+fqdn
-					# print("Calling certhandler with ARGS:")
-					# print(certargs)
-					certstatus = call(CERTHANDLER + certargs, shell=True)
-					if certstatus:
-						print("Unable to create Let's Encrypt Certificate")						
-				except Exception as e:
-					print("Unable to create Let's Encrypt Certificate")
-					print(e)
-				return True
-			if r.status == 403:
-				print("Failed to update")
-				return False
-
-		except Exception as e:
-			print("Unable to send request")
-			print(e)
-
-		ee.close()
+		if r.status == 200:
+			print("DNS record updated")
+			#print("Got '200 OK'")
+			try:
+				# generate a letsencrypt certificate using the serial number
+				certargs = " -ac -d "+fqdn
+				# print("Calling certhandler with ARGS:")
+				# print(certargs)
+				certstatus = call(CERTHANDLER + certargs, shell=True)
+				if certstatus:
+					print("Unable to create Let's Encrypt Certificate")						
+			except Exception as e:
+				print("Unable to create Let's Encrypt Certificate")
+				print(e)
+			return True
+		if r.status == 403:
+			print("Failed to update")
+			return False
 
 	except Exception as e:
-		print("Error reading eeprom")
+		print("Unable to send request")
 		print(e)
 
-	sys.exit(1)
 
 ### -------------- MAIN ---------------
 if __name__=='__main__':
 
 	dns_by_serial = False
-	try:
-		fh_sysconf = open(SYSINFO, encoding="utf_8")
-	except Exception as e:
-		print("Error opening SYSINFO file: "+SYSINFO)
-		print(e)
+	cafile = "/etc/opi/op_ca.pem"
+	if (path.isfile(SYSINFO)):
+		try:
+			fh_sysconf = open(SYSINFO, encoding="utf_8")
+		except Exception as e:
+			print("Error opening SYSINFO file: "+SYSINFO)
+			print(e)
 
-	sysconf = configparser.ConfigParser()
-	# There are no sections in our ini files, so add one on the fly.
-	try:
-		sysconf.read_file(add_section_header(fh_sysconf, 'sysinfo'), source=SYSINFO)
-		if 'sysinfo' not in sysconf:
-			print("Missing parameters in sysinfo")
-			sys.exit(1)
-		sysinfo = sysconf['sysinfo']
-		if 'ca_path' not in sysinfo:
-			print("Missing ca_path in sysinfo")
-			sys.exit(1)
-		cafile = sysinfo['ca_path'].strip('"')
-		if 'unit_id' not in sysinfo:
-			# update dns by using serialnumber in flash
-			print("Missing unit_id in sysinfo, using serialnumber")
-			dns_by_serial = True
-		else:
-			unit_id = sysinfo['unit_id'].strip('"')
-			if 'dns_key' not in sysinfo:
-				print("Missing dns_key in sysinfo")
+		sysconf = configparser.ConfigParser()
+		# There are no sections in our ini files, so add one on the fly.
+		try:
+			sysconf.read_file(add_section_header(fh_sysconf, 'sysinfo'), source=SYSINFO)
+			if 'sysinfo' not in sysconf:
+				print("Missing parameters in sysinfo")
 				sys.exit(1)
-			fp_pkey = sysinfo['dns_key'].strip('"')
-
-			if 'dnsenabled' not in sysinfo:
-				print("Missing dnsenabled parameter in sysinfo, this is correct default setting")
+			sysinfo = sysconf['sysinfo']
+			if 'ca_path' not in sysinfo:
+				print("Missing ca_path in sysinfo")
+				sys.exit(1)
+			cafile = sysinfo['ca_path'].strip('"')
+			if 'unit_id' not in sysinfo:
+				# update dns by using serialnumber in flash
+				print("Missing unit_id in sysinfo, using serialnumber")
+				dns_by_serial = True
 			else:
-				if sysinfo['dnsenabled'].strip('"') != "1":
-					print("DynDNS service not enabled.")
-					sys.exit(0)
-	except Exception as e:
-		print("Error parsing sysconfig")
-		print(e)
-		sys.exit(1)
+				unit_id = sysinfo['unit_id'].strip('"')
+				if 'dns_key' not in sysinfo:
+					print("Missing dns_key in sysinfo")
+					sys.exit(1)
+				fp_pkey = sysinfo['dns_key'].strip('"')
+
+				if 'dnsenabled' not in sysinfo:
+					print("Missing dnsenabled parameter in sysinfo, this is correct default setting")
+				else:
+					if sysinfo['dnsenabled'].strip('"') != "1":
+						print("DynDNS service not enabled.")
+						sys.exit(0)
+		except Exception as e:
+			print("No sysinfo or Error parsing sysconfig")
+			print(e)
+			sys.exit(1)
+	else:
+		dns_by_serial = True
+		print("Missing sysinfo, trying to use serial number")
 
 
 
