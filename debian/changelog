@@ -1,3 +1,10 @@
+opi-access (1.2.5) vili; urgency=medium
+
+  * Reading serial using libopi
+  * Handle "mykeep.net" 
+
+ -- PA Nilsson <pa@openproducts.se>  Mon, 21 Aug 2017 10:47:14 +0200
+
 opi-access (1.2.4) vili; urgency=medium
 
   * Fixed minor typo in upstart script 

@@ -11,7 +11,7 @@ import fcntl
 from subprocess import call
 from ctypes import *
 from os import path
-from pylibopi import SerialNumber
+from pylibopi import SerialNumber, NetworkDevice
 
 AUTH_SERVER		= "auth.openproducts.com"
 AUTH_PATH		= "/"
@@ -33,8 +33,6 @@ FAIL		= 0
 SUCCESS		= 1
 WAIT		= 2
 REQUEST_KEY	= 3
-
-DOMAIN = "op-i.me"
 
 def sendsignedchallenge(conn, unit_id, fp_pkey, challenge):
 	fh_pkey = open(fp_pkey,'r')
@@ -172,14 +170,23 @@ def update_by_serial(conn):
 	serial = SerialNumber().decode("utf-8")
 	try:
 		if (serial == "Undefined"):
-			print("Undefined serial number thus unable to update anything, exiting")
+			print("Undefined serial number, thus unable to update anything. Exiting")
 			sys.exit(1)
-		print("Serial: ")
-		print(serial)
+		
+		type = serial[4:-4]
+		if (type == "KEEP"):
+			DOMAIN = "mykeep.net"
+		elif (type == "OP-I"):
+			DOMAIN = "op-i.me"
+		else:
+			print("Unknown domain, thus unable to update anything. Exiting")
+		
 		data = {}
+
 		fqdn= serial+"."+DOMAIN
 		data['fqdn'] = fqdn
-		data['local_ip'] = get_ip()
+		iface = NetworkDevice().decode("utf-8")
+		data['local_ip'] = get_ip(iface)
 		params = urllib.parse.urlencode( data, doseq=True )
 		headers = {"Content-type": "application/x-www-form-urlencoded"}
 		path = urllib.parse.quote(AUTH_PATH + DNS_FILE)
