@@ -209,7 +209,7 @@ def update_by_serial(conn):
 				# generate a letsencrypt certificate using the serial number
 				certargs = " -ac -d "+fqdn
 				# print("Calling certhandler with ARGS:")
-				# print(certargs)
+				#print(certargs)
 				certstatus = call(CERTHANDLER + certargs, shell=True)
 				if certstatus:
 					print("Unable to create Let's Encrypt Certificate")						
