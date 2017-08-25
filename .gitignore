@@ -6,3 +6,4 @@ debian/*helper
 debian/*substvars
 .project
 .pydevproject
+*.sublime*

@@ -3,6 +3,7 @@ import urllib.parse
 import json
 from base64 import b64encode
 import hashlib
+from OpenSSL import crypto
 import configparser
 import sys
 import socket
