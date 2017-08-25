@@ -1,3 +1,9 @@
+opi-access (1.2.6) vili; urgency=medium
+
+  * Added missing dep om python crypto module 
+
+ -- PA Nilsson <pa@openproducts.se>  Fri, 25 Aug 2017 14:37:12 +0200
+
 opi-access (1.2.5) vili; urgency=medium
 
   * Reading serial using libopi
