@@ -7,7 +7,7 @@ Standards-Version: 3.9.4
 
 Package: opi-access
 Architecture: all
-Depends: miniupnpc, python3, python3-openssl
+Depends: miniupnpc, python3, python3-openssl, kgp-pywrap
 Conflicts: 
 Description: OPI access
  Sets up OPI port forwards and DynDNS services.
