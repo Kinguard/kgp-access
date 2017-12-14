@@ -168,7 +168,7 @@ def add_section_header(properties_file, header_name):
 		yield line
 
 def update_by_serial(conn):
-	serial = SerialNumber().decode("utf-8")
+	serial = SerialNumber()
 	try:
 		if (serial == "Undefined"):
 			print("Undefined serial number, thus unable to update anything. Exiting")
@@ -186,7 +186,7 @@ def update_by_serial(conn):
 
 		fqdn= serial+"."+DOMAIN
 		data['fqdn'] = fqdn
-		iface = NetworkDevice().decode("utf-8")
+		iface = NetworkDevice()
 		data['local_ip'] = get_ip(iface)
 		params = urllib.parse.urlencode( data, doseq=True )
 		headers = {"Content-type": "application/x-www-form-urlencoded"}

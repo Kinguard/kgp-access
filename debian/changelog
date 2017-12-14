@@ -1,3 +1,9 @@
+opi-access (1.2.8) vili; urgency=medium
+
+  * Removed non needed utf8 decode of serial number. 
+
+ -- PA Nilsson <pa@openproducts.se>  Thu, 14 Dec 2017 14:41:03 +0100
+
 opi-access (1.2.7) vili; urgency=medium
 
   * Updated dependancy to include kgp-pywrap. 
