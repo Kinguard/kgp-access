@@ -30,12 +30,9 @@ case "$1" in
 			sed -i '/opi-access.sh/d' /etc/rc.local
 			sed -i '/dns_update.py/d' /etc/rc.local
 		fi
-		
-		update-rc.d opi-access-boot defaults
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
-		update-rc.d -f opi-access-boot remove
     ;;
 
     *)

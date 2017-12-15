@@ -2,7 +2,7 @@ opi-access.conf /usr/share/opi-access
 opi-access /etc/cron.d
 opi-access.sh /usr/share/opi-access
 dns_update.py /usr/share/opi-access
-opi-access-boot /etc/init.d/
+opi-access-boot.sh /usr/share/opi-access
 
 
 
