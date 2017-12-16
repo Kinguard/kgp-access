@@ -1,3 +1,9 @@
+opi-access (1.2.10) vili; urgency=medium
+
+  * Only use 'stand-alone' mode in boot-sequence 
+
+ -- PA Nilsson <pa@openproducts.se>  Sat, 16 Dec 2017 19:22:00 +0100
+
 opi-access (1.2.9) vili; urgency=medium
 
   * Update to use systemd
