@@ -208,6 +208,11 @@ def update_by_serial(conn):
 			#print("Got '200 OK'")
 			try:
 				# generate a letsencrypt certificate using the serial number
+				if standalone is True:
+					print("Running stand alone mode")
+					certargs = " -a -c -d "+fqdn
+				else:
+					print("Not starting any webservers")
 				certargs = " -c -d "+fqdn
 				# print("Calling certhandler with ARGS:")
 				#print(certargs)
