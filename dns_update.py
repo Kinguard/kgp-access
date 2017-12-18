@@ -213,7 +213,7 @@ def update_by_serial(conn):
 					certargs = " -a -c -d "+fqdn
 				else:
 					print("Not starting any webservers")
-				certargs = " -c -d "+fqdn
+					certargs = " -c -d "+fqdn
 				# print("Calling certhandler with ARGS:")
 				#print(certargs)
 				certstatus = call(CERTHANDLER + certargs, shell=True)
