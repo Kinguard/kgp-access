@@ -13,6 +13,7 @@ from subprocess import call
 from ctypes import *
 from os import path
 from pylibopi import SerialNumber, NetworkDevice
+import getopt
 
 AUTH_SERVER		= "auth.openproducts.com"
 AUTH_PATH		= "/"
@@ -127,7 +128,6 @@ def getchallenge(conn, unit_id):
 	path = urllib.parse.quote(AUTH_PATH + AUTH_FILE) + "?"+qs
 
 	conn.request( "GET", path)
-
 	r = conn.getresponse()
 	data = r.read()
 
@@ -208,7 +208,12 @@ def update_by_serial(conn):
 			#print("Got '200 OK'")
 			try:
 				# generate a letsencrypt certificate using the serial number
-				certargs = " -ac -d "+fqdn
+				if standalone is True:
+					print("Running stand alone mode")
+					certargs = " -a -c -d "+fqdn
+				else:
+					print("Not starting any webservers")
+					certargs = " -c -d "+fqdn
 				# print("Calling certhandler with ARGS:")
 				#print(certargs)
 				certstatus = call(CERTHANDLER + certargs, shell=True)
@@ -232,6 +237,22 @@ if __name__=='__main__':
 
 	dns_by_serial = False
 	cafile = "/etc/opi/op_ca.pem"
+	standalone = False
+	
+	try:
+		opts, args = getopt.getopt(sys.argv[1:],"ha")
+	except getopt.GetoptError:
+		print('Syntax: dns_update.py [-a]')
+		sys.exit(2)
+
+	for opt, arg in opts:
+		print("OPTION is: '%s'" % opt)
+		if opt == '-h':
+			print("\t -a:\tRun Kinguard Certhandler in 'stand-alone' mode")
+			sys.exit()
+		elif opt in ("-a"):
+			standalone=True
+	
 	if (path.isfile(SYSINFO)):
 		try:
 			fh_sysconf = open(SYSINFO, encoding="utf_8")
@@ -306,12 +327,18 @@ if __name__=='__main__':
 				if sendDNSupdate(conn,unit_id,token):
 					try:
 						# generate a letsencrypt certificate using the serial number
-						certargs = " -ac"
-						print("Updating singed certificates")
+						if standalone is True:
+							certargs = " -ac"
+							print("Running Certhandler in standalone mode")
+						else:
+							certargs = " -c"
+						print("Updating signed certificates")
 						# print(certargs)
 						certstatus = call(CERTHANDLER + certargs, shell=True)
 						if certstatus:
-							print("Unable to create Let's Encrypt Certificate")						
+							print("Unable to create Let's Encrypt Certificate")
+						else:
+							print("Update successful.")					
 					except Exception as e:
 						print("Unable to create Let's Encrypt Certificate")
 						print(e)

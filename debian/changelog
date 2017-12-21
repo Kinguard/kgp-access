@@ -1,8 +1,32 @@
-opi-access (1.2.10) vili; urgency=medium
+opi-access (1.2.14) vili; urgency=medium
 
   * Make sure we run after opi-postsetup
 
  -- Tor Krill <tor@openproducts.se>  Thu, 21 Dec 2017 08:40:30 +0100
+
+opi-access (1.2.13) vili; urgency=medium
+
+  * Fixed indentation error which caused "stand alone" mode not to be entered for serial number update 
+
+ -- PA Nilsson <pa@openproducts.se>  Mon, 18 Dec 2017 14:57:53 +0100
+
+opi-access (1.2.12) vili; urgency=medium
+
+  * Added dep on cron 
+
+ -- PA Nilsson <pa@openproducts.se>  Sun, 17 Dec 2017 15:31:53 +0100
+
+opi-access (1.2.11) vili; urgency=medium
+
+  * Only use 'stand-alone' mode in boot-sequence also for update by serial number. 
+
+ -- PA Nilsson <pa@openproducts.se>  Sat, 16 Dec 2017 23:03:03 +0100
+
+opi-access (1.2.10) vili; urgency=medium
+
+  * Only use 'stand-alone' mode in boot-sequence 
+
+ -- PA Nilsson <pa@openproducts.se>  Sat, 16 Dec 2017 19:22:00 +0100
 
 opi-access (1.2.9) vili; urgency=medium
 
