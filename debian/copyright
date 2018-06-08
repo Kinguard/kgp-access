@@ -4,7 +4,7 @@ Source: <url://example.com>
 
 Files: *
 Copyright: 2014 PA Nilsson <pa@openproducts.se>
-License: GPL-3.0+
+License: AGPLv3
 
 Files: debian/*
 Copyright: 2014 PA Nilsson <pa@openproducts.se>
