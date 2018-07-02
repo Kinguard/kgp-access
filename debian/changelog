@@ -1,3 +1,9 @@
+opi-access (1.2.16) vili; urgency=medium
+
+  * Removed pre dep on kinguard-utils 
+
+ -- PA Nilsson <pa@openproducts.se>  Mon, 02 Jul 2018 10:53:34 +0200
+
 opi-access (1.2.15) vili; urgency=medium
 
   * Moved all auth and config to use libopi methods. 

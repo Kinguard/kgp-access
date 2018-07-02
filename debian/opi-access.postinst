@@ -26,6 +26,24 @@ case "$1" in
 			sed -i '/opi-access.sh/d' /etc/rc.local
 			sed -i '/dns_update.py/d' /etc/rc.local
 		fi
+        
+        # migrate config to sysconfig
+        oldconfig="/etc/opi/opi-access.conf"    
+
+        if ! ports=$(kgp-sysinfo -p -c upnp -k forwardports)
+        then
+            # config is not in sysconfig, can we read if from old config?
+            if [ -e $oldconfig ]
+            then
+                ports=$(sed -n 's/ports\[\([0-9]*\)\]=yes/\1/ p' <$oldconfig | tr '\n' ' ')
+                kgp-sysinfo -c upnp -k forwardports -w "$ports"
+            else
+                # nothing in old config either, just add it.
+                kgp-sysinfo -c upnp -k forwardports -w "25 80 143 443 587 993 2525"
+            fi
+
+        fi
+        rm -f $oldconfig
 
     ;;
 
