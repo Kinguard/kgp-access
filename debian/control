@@ -7,7 +7,8 @@ Standards-Version: 3.9.4
 
 Package: opi-access
 Architecture: all
-Depends: miniupnpc, python3, python3-openssl, kgp-pywrap, cron
+Pre-Depends: kinguard-utils (>=1.16)
+Depends: miniupnpc, python3, python3-openssl, kgp-pywrap, cron, kinguard-utils (>=1.16)
 Conflicts: 
 Description: OPI access
  Sets up OPI port forwards and DynDNS services.
