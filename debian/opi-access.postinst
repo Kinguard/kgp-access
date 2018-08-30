@@ -20,6 +20,28 @@ set -e
 
 case "$1" in
     configure)
+        if ! keyval=$(kgp-sysinfo -c dns -k enabled)
+        then 
+            kgp-sysinfo -c dns -k enabled -bw true
+
+        fi
+        if ! keyval=$(kgp-sysinfo -c dns -k provider)
+        then
+            kgp-sysinfo -c dns -k provider -w "OpenProducts"
+        fi
+        if ! keyval=$(kgp-sysinfo -c dns -k availabledomains)
+        then
+            kgp-sysinfo -a -c dns -k availabledomains -w "mykeep.net,op-i.me"
+        fi
+        if ! keyval=$(kgp-sysinfo -c dns -k dnsauthkey)
+        then
+            kgp-sysinfo -c dns -k dnsauthkey -w "/etc/opi/dnspriv.pem"
+        fi
+        if ! keyval=$(kgp-sysinfo -c dns -k dnspubkey)
+        then 
+            kgp-sysinfo -c dns -k dnspubkey -w "/etc/opi/dnspub.pem"
+        fi
+
 	
 		# remove possible existing triggers from rc.local
 		if [ -e /etc/rc.local ]; then

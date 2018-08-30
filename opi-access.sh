@@ -6,7 +6,9 @@ else
 	echo "No valid IGD found"
 	exit 0
 fi
-ipaddr=`/sbin/ifconfig eth0 | grep 'inet addr:' | cut -d: -f2 | awk '{print $1}'`
+
+netif=$(kgp-sysinfo -p -u | grep "NetworkDevice" | awk -F':' '{print$2}')
+ipaddr=$(/sbin/ifconfig $netif | grep 'inet\s' | awk '{print $2}')
 
 ports=$(kgp-sysinfo -p -c upnp -k forwardports)
 if [[ $? -ne 0 ]]; then
