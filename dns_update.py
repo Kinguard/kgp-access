@@ -52,14 +52,37 @@ if __name__=='__main__':
 			sys.exit(1)
 
 		try:
+			certargs=""
 			# generate a letsencrypt certificate using the serial number
+                        # check if we have a hostname+domain, if not use serial number
+			try:
+				GetKeyAsString("hostinfo","domain")
+				GetKeyAsString("hostinfo","hostname")
+
+			except:
+				print("No hostinfo available trying serial")
+				# no FQDN in sysconfig, try serial number
+				try:
+					serial=SerialNumber()
+					print("-- TODO - use libopi to find default domain --")
+					if "KEEP" in serial:
+						# use mykeep.net domain
+						fqdn = serial +".mykeep.net"
+					else:
+						# use op-i domain
+						fqdn = serial + ".op-i.me"
+					certargs = " -d " + fqdn
+				except Exception as e:
+					print("Failed to read serial number, exit")
+					sys.exit(1)
+
 			if standalone is True:
-				certargs = " -ac"
+				certargs = certargs + " -ac"
 				print("Running Certhandler in standalone mode")
 			else:
-				certargs = " -c"
+				certargs = certargs + " -c"
 			print("Updating signed certificates")
-			# print(certargs)
+			#print(certargs)
 			certstatus = call(CERTHANDLER + certargs, shell=True)
 			if certstatus:
 				print("Unable to create Let's Encrypt Certificate")
