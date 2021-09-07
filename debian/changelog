@@ -1,3 +1,9 @@
+opi-access (1.2.19) vili; urgency=medium
+
+  * Buster adaptations
+
+ -- Tor Krill <tor@openproducts.se>  Thu, 29 Aug 2019 15:01:29 +0200
+
 opi-access (1.2.18) vili; urgency=medium
 
   * Support generation of certificate based on serial number. 
