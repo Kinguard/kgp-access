@@ -1,3 +1,9 @@
+opi-access (1.2.20) vigrid; urgency=medium
+
+  * Bullseye build
+
+ -- Tor Krill <tor@openproducts.se>  Tue, 01 Feb 2022 16:36:42 +0100
+
 opi-access (1.2.19) vili; urgency=medium
 
   * Buster adaptations
